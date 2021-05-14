@@ -28,7 +28,9 @@ int main(){
     printMatriz (campo,x,y);
 
     //verificar todas as letras e fazer a transformação para sexdecimal
-    int *peca = quantpecas_localidade(campo, 'b', x, y); 
+    int *peca = quantpecas_localidade(campo, 'a', x, y); 
+
+    printf("#############\n");//aqui
 
     printf("%d\n",*peca);
     printf("%d\n",*(peca+1));
@@ -55,6 +57,7 @@ int *quantpecas_localidade (int *campo, int peca, int mx, int my){
             arr1[count++] = i;//sexdecimal(i); //passar para sexdecimal 
         }
     }
+    printf("#############\n");//aqui
     arr1[count] = 's';
     int arr2[count+1];
     arr2[0] = count;
@@ -62,6 +65,13 @@ int *quantpecas_localidade (int *campo, int peca, int mx, int my){
         arr2[j+1] = arr1[j];
     }
     ponteiro = arr2;
+
+    printf("%d\n",*ponteiro);
+    printf("%d\n",*(ponteiro+1));
+    printf("%d\n",*(ponteiro+2));
+    printf("%d\n",*(ponteiro+3));
+    printf("%d\n",*(ponteiro+4));
+
     return ponteiro;
 }
 
