@@ -8,7 +8,7 @@ void movimentacao (int *campo, int x, int y, char direcao, int mx, int my);
 
 void verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int my);
 
-int *quantpecas_localidade (int *campo, int peca, int mx, int my); 
+void quantpecas_localidade (int *quantLocal, int *campo, int peca, int mx, int my); 
 
 int main(){
     int x = 7, y = 6; 
@@ -28,7 +28,10 @@ int main(){
     printMatriz (campo,x,y);
 
     //verificar todas as letras e fazer a transformação para sexdecimal
-    int *peca = quantpecas_localidade(campo, 'a', x, y); 
+    int aux = 1000;
+    int *peca = &aux;
+
+    quantpecas_localidade(peca,campo, 'a', x, y); 
 
     printf("#############\n");//aqui
 
@@ -50,8 +53,8 @@ void printMatriz (int *campo, int mx, int my){
     }
 };
 
-int *quantpecas_localidade (int *campo, int peca, int mx, int my){
-    int total = mx*my, i = 0, count = 0, arr1[5], *ponteiro;
+void quantpecas_localidade (int *quantLocal, int *campo, int peca, int mx, int my){
+    int total = mx*my, i = 0, count = 0, arr1[5];//, *ponteiro;
     for (;i <= total; i++){
         if (*(campo+i) == peca){
             arr1[count++] = i;//sexdecimal(i); //passar para sexdecimal 
@@ -64,15 +67,18 @@ int *quantpecas_localidade (int *campo, int peca, int mx, int my){
     for (int j = 0;arr1[j] != 's'; j++){
         arr2[j+1] = arr1[j];
     }
-    ponteiro = arr2;
+    quantLocal = arr2;
 
-    printf("%d\n",*ponteiro);
-    printf("%d\n",*(ponteiro+1));
-    printf("%d\n",*(ponteiro+2));
-    printf("%d\n",*(ponteiro+3));
-    printf("%d\n",*(ponteiro+4));
+    
+    // ponteiro = arr2;
 
-    return ponteiro;
+    printf("%d\n",*quantLocal);
+    printf("%d\n",*(quantLocal+1));
+    printf("%d\n",*(quantLocal+2));
+    printf("%d\n",*(quantLocal+3));
+    printf("%d\n",*(quantLocal+4));
+
+    //return &arr2[0];
 }
 
 
