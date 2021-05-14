@@ -1,0 +1,7 @@
+{
+    "C_Cpp.errorSquiggles": "Enable",
+    "files.associations": {
+        "stdio.h": "c",
+        "aritmetica.h": "c"
+    }
+}

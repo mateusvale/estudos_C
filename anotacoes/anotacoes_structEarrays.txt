@@ -1,0 +1,34 @@
+struct ponto meio[2] = {
+        {1,2},
+        {3,4}
+};
+
+printf("meio[0].x = %d\n", meio[0].x);
+printf("meio[0].y = %d\n", meio[0].y);
+printf("meio[1].x = %d\n", meio[1].x);
+printf("meio[1].y = %d\n", meio[1].y);
+
+OU
+
+struct ponto meio[2];
+meio[0].x = 1;
+meio[0].y = 2;
+meio[1].x = 3;
+meio[1].y = 4;
+
+printf("meio[0].x = %d\n", meio[0].x);
+printf("meio[0].y = %d\n", meio[0].y);
+printf("meio[1].x = %d\n", meio[1].x);
+printf("meio[1].y = %d\n", meio[1].y);
+
+######################################
+
+typedef cria novos nomes para tipos de dados:
+
+OBS:
+typedef struct ponto matriz;
+matriz meio[2];
+meio[0].x = 1;
+meio[0].y = 2;
+meio[1].x = 3;
+meio[1].y = 4;

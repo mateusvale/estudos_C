@@ -1,0 +1,179 @@
+Struct é como trabalhar com objetos em C.
+
+struct ponto{
+        int x;
+        int y;
+    };
+
+struct ponto a = {1,2};
+
+printf("ponto a.x = %d\n", a.x);
+printf("ponto a.y = %d\n", a.y);
+
+OU
+
+struct ponto{
+        int x;
+        int y;
+    }a;
+
+a.x = 1, a.y = 2;
+
+printf("ponto a.x = %d\n", a.x);
+printf("ponto a.y = %d\n", a.y);
+
+OU
+
+struct ponto{
+        int x;
+        int y;
+    }a = {1,2};
+
+printf("ponto a.x = %d\n", a.x);
+printf("ponto a.y = %d\n", a.y);
+
+###############################################
+
+No struct, posso colocar vários tipos de dados:
+
+struct ponto{
+        int idade;
+        char nome;
+    }a;
+
+    a.idade = 24;
+    a.nome = 'M';
+
+    printf("idade = %d\n", a.idade);
+    printf("nome = %c\n", a.nome);
+
+###############################################
+
+struct ponto pt; -> uma variavel pt que é uma estrutura do tipo struct ponto
+
+###############################################
+Podemos colocar uma struct dentro de uma struct:
+
+struct endereco{
+        int num;
+        int apartamento;
+    };
+    
+    struct info{
+        int idade;
+        char nome;
+        struct endereco info1;
+        struct endereco info2;
+    }a;
+
+    a.idade = 24;
+    a.nome = 'M';
+    a.info1.num = 40;
+    a.info2.apartamento = 506;
+
+    printf("idade = %d\n", a.idade);
+    printf("nome = %c\n", a.nome);
+    printf("numero = %d\n", a.info1.num);
+    printf("apt = %d\n", a.info2.apartamento);
+
+###############################################
+As únicas operações legais em uma estrutura são copiá-la e atribuí-la como uma unidade, tomando-se seu endereço com &, e acessando-se seus
+membros. Cópia e atribuição incluem a passagem de argumentos para função e também o retorno de valores de funções. As estruturas não
+podem ser comparadas.
+
+OBS: Colocar a struct fora da main
+
+struct ponto{
+        int x;
+        int y;
+    };
+struct retangulo{
+    struct ponto pt1;
+    struct ponto pt2;
+};
+
+struct ponto criaponto(int x, int y){
+    struct ponto temp;
+    temp.x = x;
+    temp.y = y;
+    return temp;
+};
+
+int main(){
+
+    struct retangulo tela;
+    struct ponto meio;
+    struct ponto criaponto(int,int);
+    tela.pt1 = criaponto(0,0);
+    tela.pt2 = criaponto(10, 15);
+
+    printf("tela.pt1.x = %d\n", tela.pt1.x);
+    printf("tela.pt1.y = %d\n", tela.pt1.y);
+    printf("tela.pt2.x = %d\n", tela.pt2.x);
+    printf("tela.pt2.y = %d\n", tela.pt2.y);
+};
+
+OBS:não precisa desta linha => struct ponto criaponto(int,int);
+
+###############################################
+no caso acima, foi criado uma função de struct ponto, que tinha como parametros inteiros, mas posso passar struct como parametros tbm:
+
+struc ponto somaponto(struct ponto p1, struct ponto p2)
+{
+
+    p1.x += p2.x;
+    p1.y += p2.y;
+    return p1;
+
+}
+###############################################
+Struct e ponteiros:
+
+struct ponto *pp; //o ponteiro pp é do tipo struct ponto
+
+struct ponto origem, *pp;
+pp = &origem;
+
+OU
+
+struct ponto origem, *pp = &origem;
+
+printf("origem é (%d,%d)\n", (*pp).x, (*pp).y);
+//OBS: para o print, é necessário o (*pp).x .Caso colocassemos *pp.x, estaria errado, pois o . antecede o *, logo seria como se fosse *(pp.x), e x não é um apontador.
+
+(*pp).x também equivale a pp->x
+
+###############################################
+
+struct retang r, *rp = &r;
+
+Podemos fazer o print de r.pt1.x de 4 formas:
+
+    r.pt1.x
+    rp->pt1.x   //Essa acredito que seja mais facil
+    (r.pt1).x
+    (rp->pt1).x
+
+###############################################
+struct {
+
+    int tam;
+    char *cad;
+
+} *p;
+
+Se fizermos isto, o valor de tam será aumentando em 1 e depois o ponteiro o acessa:
+++p->tam
+
+Exemplo:
+struct ponto meio = {10,20}, *p = &meio;
+printf("px + 1 = %d\n", ++p->x);
+    >> px + 1 = 11
+
+Se quisermos incrementarmos o p, faremos assim:
+    1) Antes de acessar o tam:
+        (++p)->tam
+    2) Depois de acessar o tam:
+        p++->tam ou (p++)->tam 
+###############################################
+

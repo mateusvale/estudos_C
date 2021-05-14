@@ -1,0 +1,44 @@
+												LABProg
+AULA 10
+
+- nao se tem como saber o fim de um vetor
+
+- em uma função. é interessante nós colocarmos um const em um array no parametro:
+	
+		int pesqbin(int x, const int v[ ], int n);
+		
+		OBS: só será const o array dentro da função.
+		
+- man isspace (testar isso no terminal - são funções muito uteis para utilizar)
+
+- for (int i =0, j = strlen(s)-1; i < j; i++,j--){}   //podemos fazer desse jeito
+
+AULA 11
+
+
+float num = 10.25;
+printf("%d\n", (int) num);   >> 10
+
+compilação em C gera, a partir de um código fonte, um código objeto.
+O código objeto não é completo, pois ele não tem todas as ligações. 
+
+arquivos .h
+Servem como biblioteca local.
+terá um arquivo main.c, outros arquivos xxxx.c e um arquivo xxxx.h que terá apenas o cabeçalho das funções.
+
+será preciso colocar no main.c o #include "xxxx.h"
+e também quando for compilar, precisamos compilar todos os códigos fontes:
+	gcc main.c xxxx.c yyyy.c -o calc
+
+a constante (#define zzzzz) também pode colocar no arquivo.h
+
+Nos outros arquivos que não são o main, precisamos colocar o arquivo.h tbm (#include "arquivo.h")
+
+Nos arquivos.c que não é o main, não precisa colocar o cabeçalho, pois o arquivo.h já servirá como cabeçalho.
+
+
+AULA 12 - Recursão
+
+Usa muita memória da pilha
+precisamos dizer quando a função irá terminar (ponto de convergencia)
+

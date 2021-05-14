@@ -1,0 +1,172 @@
+int main(){
+    int x[] = {1,2,3,4,5,6,7,8,9,10};
+    int *p = &x[0];
+    int y = *p;
+    p++;
+    printf("*p = %d\n", *p);
+    printf("y = %d\n", y);
+}
+
+>>*p = 2
+>>y = 1
+
+Com essa linha {*(p++);}, eu pude percorrer pela memoria e acessar o segundo elemento de x
+
+OBS:
+    int *p = &x[0] == int *p = x
+    int *p = &x[1] == int *p = x+1
+
+############################################################
+Podemos criar uma string de dois jeitos:
+    char *string  = "Mateus";
+    char string[] = "Mateus";
+
+    A melhor forma é utilizando ponteiros
+
+    int main(){
+        int n = 0;
+        char *string = "Mateus";
+        for (;*string != '\0';string++){
+            n++;
+        }
+        printf("Tamanho da string = %d\n", n);
+    }
+############################################################
+
+Passando por argumento um endereço de memoria -> Podemos fazer de dois jeitos:
+
+    f(&a[2]) ou f(a+2)
+
+Dentro da função, podemos passar por parametros assim:
+
+    f(int vet[]) ou f(int *vet)
+
+############################################################
+
+int main(){
+    int x[] = {10,20,30,40,50,60,70,80,90,100};
+    int *p = &x[0];
+    p+=4;
+    printf("*p = %d\n", *p);
+    printf("x = %d\n", x[9]);
+    printf("p - x = %ld\n", (p-x));
+}
+ >>*p = 50
+    x = 100
+    p - x = 4
+
+    o ponteiro p foi acrescentado em 4. Logo foi de 0 para 4. Quando realizamos a subtração do ponteiro p com o endereço x[0], a diferença foi de 4. 
+    2 coisas importantes. Só posso fazer essa subtração quando ambos apontam para o mesmo vetor e tbm quase precisaremos printar o resultado, precisamos fazer em long int.
+
+############################################################
+
+int main()
+{
+    char *name = "Mateus";
+    for (;*name != '\0';name++)
+        printf("%c",*name);
+    printf("\n");
+}
+    >> Mateus
+
+no caso acima, nao podemos fazer isto: printf("%s\n", *name). Isso acontece pois o ponteiro name está apontado para o caracter M.
+
+############################################################
+
+void strcpy1( char *s, char *t)
+{
+    while ((*s++ = *t++) != '\0');
+}
+
+int main()
+{
+    char name[] = "Mateus";
+    char outro[7];
+    strcpy1(outro,name);
+    printf("%s\n",outro);
+}
+
+############################################################
+
+    int a[] = {1,2,3,4,5};
+    int *p = a;
+    int y = *p++;
+    printf("*p = %d\ny = %d\n", *p,y);
+
+    >>*p = 2
+    >> y = 1
+
+    No caso de cima, a linha int y = *p++, primeiro é passado o valor *p para o y depois é acrescentado 1 no endereço de p.
+
+    No caso também acima, se eu utilizar *++p, primeiro iremos acrescentar 1 no endereço de p, depois passar o *p para y
+    
+#
+    int a[] = {10,20,30,40,50};
+    int *p = a;
+    int y = *p; 
+    printf(" y = %d\n*p = %d\n", y,*p);
+
+    OBS: apenas passa o valor do ponteiro para y
+
+        >>  y == 10
+        >> *p == 10
+        
+#
+    int a[] = {10,20,30,40,50};
+    int *p = a;
+    int y = *p++;
+    printf(" y = %d\n*p = %d\n", y,*p);
+
+    OBS: primeiro passa o valor do ponteiro para y e depois acrescenta um no endereço do ponteiro
+
+        >>  y == 10
+        >> *p == 20
+#
+    int a[] = {10,20,30,40,50};
+    int *p = a;
+    int y = *++p;
+    printf(" y = %d\n*p = %d\n", y,*p);
+
+    OBS: Primeiro acrescenta um no endereço do ponteiro e depois passa o valor para y
+
+        >>  y == 20
+        >> *p == 20
+#
+    int a[] = {10,20,30,40,50};
+    int *p = a;
+    int y = *p+1;
+    printf(" y = %d\n*p = %d\n", y,*p);
+
+    OBS: Passa o valor do ponteiro + 1 para o y
+
+        >>  y == 11
+        >> *p == 10
+#
+    int a[] = {10,20,30,40,50};
+    int *p = a;
+    int y = (*p)+1;
+    printf(" y = %d\n*p = %d\n", y,*p);
+
+    OBS: Passa o valor do ponteiro + 1 para o y
+
+        >>  y == 11
+        >> *p == 10
+#
+    int a[] = {10,20,30,40,50};
+    int *p = a;
+    int y = *(p+1);
+    printf(" y = %d\n*p = %d\n", y,*p);
+
+    OBS: Passa o valor do ponteiro acrescentado em 1 na memoria do ponteiro
+
+        >>  y == 20
+        >> *p == 10
+        
+############################################################
+
+
+    
+
+    
+
+

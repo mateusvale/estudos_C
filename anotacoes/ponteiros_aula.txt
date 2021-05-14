@@ -1,0 +1,53 @@
+AULA 14 - PONTEIROS
+
+int a[] = {10, 20, 30, 40, 50}
+int *pa = &a[0]   //local da memoria
+
+*pa = 0 // o primeiro elemento será 0 -> {0,20,30,40,50}
+pa++ //vou para o segundo elemento
+
+*pa = 123 // {0,123,30,40,50}
+*(pa+1)=456; //passa para o outro elemento e depois muda para 456 -> {0,123,456,,40,50}
+
+OBS: *(pa+1)=456 != *(pa++)=456
+	 *(pa+1)=456 != *(++pa)=456
+	 meio que o ++pa e pa++ são iguais nesse caso
+
+	*(pa+1)=456 == *++pa=456
+
+	com ponteiros, podemos nos deslocar mais facil pelo vetor
+
+	pa+1, pa+2, isso irá mudar de indice do array. Quando colocamos um *pa ai que é o valor
+
+
+	int *pa = &a[0]  ==  int *pa = a
+
+	obs: Posso usar o ponteiro como um vetor:
+		*pa = 0
+		pa[1] = 45 //vai modificar o valor do segundo elemento do array para 45, porém não irá mudar o pa
+
+		esse pa[1] é em relação ao ponteiro. Exemplo abaixo:
+
+		{1,2,3,4,5}
+		int *pa = a
+		*pa = 0 >> {0,2,3,4,5}
+		pa++ //pa agora aponta para o segundo elemento do array
+		pa[1] = 50 >> {0,2,50,4,5} //isso acontece pois pa[1] será em relação ao ponteiro
+
+
+		OBS: passagem por valor, passagem por referencia, por valor referencia, por resultado e por nome.
+
+
+
+	char *str = "UERJ";    >> define a string na heap
+
+
+
+
+	resumo:		int *pa = &a[0] ou int *pa = a
+				ele vai pegar o endereço do primeiro elemento do array a e vai colocar no ponteiro
+
+				printf de *pa => irá passar o valor do seu endereço
+				printf de pa ==> irá passar o valor do local da memoria 
+
+

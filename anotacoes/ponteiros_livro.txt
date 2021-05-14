@@ -1,0 +1,66 @@
+anotações do livro
+
+p = &c;    atribui o endereço de c na variavel p
+
+* é um operador unário. Quando aplicado a um apontador, ele acessa o objeto que o apontador aponta
+
+printf("valor do objeto = %d\n", *p);
+printf("Endereço do objeto = %d\n", p);
+
+No caso de cima, ambas variáveis (p e c) tem o mesmo endereço, logo caso eu mude uma ou outra, ambas irão mudar 
+
+y = *p; //isso quer dizer que a variavel y irá receber o valor do objeto que o apontador aponta 
+
+int main(){
+    int x = 10;
+    int y;
+    int *p; 
+    p = &x;
+    y = *p;
+    x++;
+
+    printf("*p = %d\n", *p); //>> 11
+    printf("x = %d\n", x);   //>> 11
+    printf("y = %d\n", y);   //>> 10
+}
+
+OBS: Funciona tbm:
+     int x = 10;
+     int *p = &x; 
+
+Nesse caso, queremos acrescentar 1 ao valor do objeto do *p. Podemos fazer de diversas formas:
+
+    ++*p;
+    (*p)++;
+    *p+=1;
+    *p = *p +1;
+
+    OBS: mas não podemos acrescentar *p++ nesse caso, pois estariamos acrescentando o p. Isso acontece pois estamos acrescentando na memória
+    No caso abaixo funcionaria, pois estamos acrescentando o p.
+    int main(){
+    int x[] = {1,2,3,4,5,6,7,8,9,10};
+    int *p = &x[0];
+    *(p++); //ou p++
+    printf("*p = %d\n", *p); >> *p = 2
+    }
+
+##############################################################
+troca (a,b);
+void troca (int x, int y){
+    int temp;
+    temp = x;
+    x = y;
+    y =temp;
+}
+
+Esse estaria errado, pois a passagem é feita por valor, e não por referencia. Logo precisamos fazer o seguinte:
+
+troca (&a,&b);
+void troca (int *px, int *py){
+    int temp;
+    temp = *px;
+    *px  = *py;
+    *py  = temp;
+}
+
+##############################################################

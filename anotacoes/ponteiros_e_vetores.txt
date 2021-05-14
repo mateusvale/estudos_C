@@ -1,0 +1,38 @@
+vetor de ponteiros
+
+char *var[10];
+
+No caso acima, existirá um vetor com 10 elementos, sendo cada elemento um ponteiro.
+
+    int a[] = {10,20,30,40,50};
+    int *p[2];
+    p[0] = a;
+    int y = *(p[0]++);
+    printf(" y = %d\n*p = %d\n", y,*p[0]);
+
+    >>  y = 10
+    >> *p = 20
+
+##################################################################
+
+Vetores Multidimensionais
+
+static char tabdia[2][13] = {
+    {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+    {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+};
+
+tabdia[i][j] // [linha][coluna]]
+
+se um vetor bidimensional tiver que ser passado para uma função, preciso somente colocar o numero de colunas e nao de linhas, nao sendo necessário passar a linha:
+
+    f (int tabdia[2][13])
+    ou
+    f (int tabdia[][13])
+    ou
+    f (int (*tabdia)[13])
+
+    porém nao este:
+    int *tabdia[13]     //pois nesse caso o parametro é um apontador de um vetor de 13 inteiros.
+
+    
