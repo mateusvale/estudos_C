@@ -6,11 +6,13 @@
 
 void printMatriz (int *campo, int mx, int my); //funciona
 
-void movimentacao (int *campo, int x, int y, char direcao, int mx, int my);
+void movimentacao (int *campo, int x, int y, char direcao, int mx, int my); //funciona
 
 int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int my); //funciona
 
 int *quantpecas_localidade (int *campo, int peca, int mx, int my); //funciona
+
+void traducao_direcao(char direcao);
 
 int main(){
     int x = 7, y = 6; 
@@ -37,9 +39,8 @@ int main(){
     //########teste função verifica_movimentacao########//
 
     //########teste função movimentacao########//
-    movimentacao(campo, 4, 3, 'B', x, y);
+    movimentacao(campo, 3, 2, 'B', x, y);
     //########teste função movimentacao########//
-
 
     //########teste função quantpecas_localidade########//
     // int *peca;
@@ -64,7 +65,6 @@ void printMatriz (int *campo, int mx, int my){
     }
 };
 
-
 int *quantpecas_localidade (int *campo, int peca, int mx, int my){
     int total = mx*my, i = 0, count = 0, *count_e_localidade;
     static int arr1[30]; //numero alto para ser maior do que a quantidade de '*'
@@ -83,29 +83,17 @@ int *quantpecas_localidade (int *campo, int peca, int mx, int my){
     return count_e_localidade;
 }
 
-
 int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int my){
     int local_peca = my*x + y;
-
-    // printf("local da peça = %d\n",local_peca);
-
     int peca = *(campo+local_peca);
-
-    // printf("peça = %c\n",peca);
-
     int *count_e_localidade;
     count_e_localidade = quantpecas_localidade(campo, peca, mx, my); //(count,x,x,x,x)
-
-    // printf("%d\n",*count_e_localidade);
-    // printf("%d\n",*(count_e_localidade+1));
-
     int quantidade = *count_e_localidade;
     int peca_vazia = 0, peca_mesma = 0;
     //Para o movimento da peca for valido, quando houver a movimentacao,
     //metade de seu corpo irá para o vazio e a outra metade irá para o lugar que era sua peca 
     //a afirmacao acima é só quando a peca tem 4 ou 2 tamanhos, pois caso seja 1 tamanho, ele vai direto para o vazio
     //T B E D
-
     if (peca != ' ' || peca != '*' || peca != '+'){
         if (direcao == 'D'){
             for (int i = 0; i < quantidade; i++){
@@ -116,7 +104,6 @@ int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int m
                     peca_mesma++;
                 }
             }
-
         }
         else if (direcao == 'E'){
             for (int i = 0; i < quantidade; i++){
@@ -127,7 +114,6 @@ int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int m
                     peca_mesma++;
                 }
             }
-            
         }
         else if (direcao == 'B'){
             for (int i = 0; i < quantidade; i++){
@@ -138,8 +124,6 @@ int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int m
                     peca_mesma++;
                 }
             }
-
-
         } else if(direcao == 'T'){
             for (int i = 0; i < quantidade; i++){
                 if ( *(campo+( *(count_e_localidade+1+i)-my )) == ' '){ //soma a peca em 1
@@ -149,19 +133,15 @@ int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int m
                     peca_mesma++;
                 }
             }
-
         } else return FALSE;
-
     }
         else{
             return FALSE;
-            // printf("Movimento Inválido\n");
         }
-    // printf("quantidade = %d\n",quantidade);
-    // printf("peca_vazia = %d\n",peca_vazia);
-    // printf("peca_mesma = %d\n",peca_mesma);
-
     if (quantidade == 4 && peca_vazia == 2 && peca_mesma ==2){
+        return TRUE;
+    } //colocar 3 pecas aqui por conta do tabuleiro 2
+    else if(quantidade == 3 && peca_vazia == 2 && peca_mesma == 1){
         return TRUE;
     }
     else if ((quantidade == 2 && peca_vazia == 1 && peca_mesma == 1) || (quantidade == 2 && peca_vazia == 2 && peca_mesma == 0)){
@@ -169,15 +149,34 @@ int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int m
     }
     else if (quantidade == 1 && peca_vazia == 1 && peca_mesma ==0){
         return TRUE;
-
     } else return FALSE;
 
 }
 
+void traducao_direcao(char direcao){
+    switch (direcao){
+    case 'B':
+        printf("baixo\n");
+        break;
+    case 'T':
+        printf("topo\n");
+        break;
+    case 'E':
+        printf("esquerda\n");
+        break;
+    case 'D':
+        printf("direita\n");
+        break;      
+    default:
+        printf("nenhum lugar\n");
+    }
+}
 
 void movimentacao (int *campo, int x, int y, char direcao, int mx, int my){
     if (verifica_movimentacao(campo,x,y,direcao,mx,my) == 0){
-        printf("Impossível movimentar peça em %d,%d para %c\n", x,y,direcao);
+
+        printf("Impossível movimentar peça em %d,%d para ", x,y);
+        traducao_direcao(direcao);
     }
     else{
         int local_peca = my*x + y;
@@ -189,67 +188,27 @@ void movimentacao (int *campo, int x, int y, char direcao, int mx, int my){
 
         if (direcao == 'D'){
             for (int i = 0; i < quantidade; i++){
-
                 *(campo+( *(count_e_localidade+1+i)+1)) = peca;
                 aux[i] = *(count_e_localidade+1+i)+1;
-            
-                // if ( *(campo+( *(count_e_localidade+1+i)+1 )) == ' '){ //soma a peca em 1
-
-                //      *(campo+( *(count_e_localidade+1+i)+1 )) = peca;
-                //      *(campo+( *(count_e_localidade+1+i))) = ' ';
-
-                //     // peca_vazia++;
-                // }
-                // else if (*(campo+( *(count_e_localidade+1+i)+1 )) == peca){
-                //     // peca_mesma++;
-                //     *(campo+( *(count_e_localidade+1+i)+1 )) = peca;
-                //      *(campo+( *(count_e_localidade+1+i))) = ' ';
-                // }
             }
         }
         else if (direcao == 'E'){
             for (int i = 0; i < quantidade; i++){
-                
                 *(campo+( *(count_e_localidade+1+i)-1)) = peca;
                 aux[i] = *(count_e_localidade+1+i)-1;
-
-
-
-                // if ( *(campo+( *(count_e_localidade+1+i)-1 )) == ' '){ //soma a peca em 1
-                //     // peca_vazia++;
-                // }
-                // else if (*(campo+( *(count_e_localidade+1+i)-1 )) == peca){
-                //     // peca_mesma++;
-                // }
             }
             
         }
         else if (direcao == 'B'){
             for (int i = 0; i < quantidade; i++){
-
                 *(campo+( *(count_e_localidade+1+i)+my)) = peca;
                 aux[i] = *(count_e_localidade+1+i)+my;
-            //     if ( *(campo+( *(count_e_localidade+1+i)+my )) == ' '){ //soma a peca em 1
-            //         // peca_vazia++;
-            //     }
-            //     else if (*(campo+( *(count_e_localidade+1+i)+my )) == peca){
-            //         // peca_mesma++;
-            //     }
             }
-
-
         } else {
             for (int i = 0; i < quantidade; i++){
 
                 *(campo+( *(count_e_localidade+1+i)-my)) = peca;
                 aux[i] = *(count_e_localidade+1+i)-my;
-
-                // if ( *(campo+( *(count_e_localidade+1+i)-my )) == ' '){ //soma a peca em 1
-                //     // peca_vazia++;
-                // }
-                // else if (*(campo+( *(count_e_localidade+1+i)-my )) == peca){
-                //     // peca_mesma++;
-                // }
             }
         }
         int pode_apagar; 
@@ -264,9 +223,7 @@ void movimentacao (int *campo, int x, int y, char direcao, int mx, int my){
             if (pode_apagar == TRUE){
                 *(campo+( *(count_e_localidade+1+i))) = ' ';
             }    
-
         }
         printMatriz (campo,mx,my);
-
     }
 }
