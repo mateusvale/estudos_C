@@ -18,6 +18,7 @@ int main (int argc, char *argv[]){
     int configuracao, x = 7, y, c = 0,direcao,local_m = 1000; //colocar um valor alto para local_m
 
     int contem_c = FALSE;
+    int contem_m = FALSE;
     int posicao_x, posicao_y;
     int anterior = 0;
 
@@ -34,6 +35,7 @@ int main (int argc, char *argv[]){
                     configuracao = 2;
                 }
                 if (c == 'm'){
+                    contem_m = TRUE;
                     local_m = i;
                 }
                 if ((local_m + 1) == i){
@@ -82,9 +84,13 @@ int main (int argc, char *argv[]){
 
     printMatriz (campo,x,y);
 
-    movimentacao(campo, posicao_x, posicao_y, direcao, x, y);
+    if (contem_m == TRUE){
+        movimentacao(campo, posicao_x, posicao_y, direcao, x, y);
+    }
 
 }
+
+//#################################################################################
 
 void printMatriz (int *campo, int mx, int my){
     printf("\n");
