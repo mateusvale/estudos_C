@@ -7,21 +7,11 @@
 char *nome_txt(int argc, char *argv[]);
 
 int main (int argc, char *argv[]){
-    // int c,count_letter = 0, anterior = 0, flag_name = FALSE;
-
-    // int contem_f = FALSE;
-    // char nome_arquivo_array[50];
+   
     char *nome_arquivo;
 
     nome_arquivo = nome_txt(argc,argv);
-    // nome_arquivo = nome_arquivo_array;
-    
-
-    // if (contem_f == nome_txt(nome_arquivo_array, argc, argv)){
-    //     char novo_nome[] = "haikori.txt";
-    //     nome_arquivo = novo_nome;
-    // }
-
+   
     for (int i= 0; *(nome_arquivo+i) != '\0'; i++){
         printf("%c",*(nome_arquivo+i));
     }
