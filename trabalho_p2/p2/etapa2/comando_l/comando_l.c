@@ -26,10 +26,10 @@ int main (int argc, char *argv[]){
     // if ((i+2)/7 < 6)printf("opa\n");
 
     //######################coleta do local das pecas######################//
-    int config = 2;
-    int *pecas = leitura (nome_arquivo, config);
-    for (int i = 0; *(pecas+i) != '\0'; i++) printf("%c",*(pecas+i));
-    printf("\n");
+    // int config = 2;
+    // int *pecas = leitura (nome_arquivo, config);
+    // for (int i = 0; *(pecas+i) != '\0'; i++) printf("%c",*(pecas+i));
+    // printf("\n");
     //######################coleta do local das pecas######################//
     
     comando_l(nome_arquivo);

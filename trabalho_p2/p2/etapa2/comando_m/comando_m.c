@@ -4,104 +4,164 @@
 #define TRUE 1
 #define FALSE 0
 
-void printMatriz (int *campo, int mx, int my);
-
-void movimentacao (int *campo, int x, int y, char direcao, int mx, int my);
-
-int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int my);
-
 int *quantpecas_localidade (int *campo, int peca, int mx, int my);
+
+int verifica_movimentacao (int *campo, int x, int y, char direcao, int configuracao);
+
+void imprime(int *config, int configuracao); //funcionando
+
+void comando_l (char *nome_arquivo); //funcionando
+
+char *nome_txt(int argc, char *argv[]); //funcionando
+
+int *leitura (char *nome_arquivo, int config); //funcionando
+
+void movimentacao (int *campo, int x, int y, char direcao, int configuracao);
 
 void traducao_direcao(char direcao);
 
 int main (int argc, char *argv[]){
-    int configuracao, x = 7, y, c = 0,direcao,local_m = 1000; //colocar um valor alto para local_m
 
-    int contem_c = FALSE;
-    int contem_m = FALSE;
-    int posicao_x, posicao_y;
-    int anterior = 0;
+    //###################################
+    //vai pegar o nome do arquivo que será passado por parametro na hora de executar
+    char *nome_arquivo;
+    nome_arquivo = nome_txt(argc,argv);
+    
+    //###################################
+    //peca recebe o array
+    int config = 1;
+    int *pecas = leitura (nome_arquivo, config);
+    
+    comando_l(nome_arquivo);
+    
+    // movimentacao(pecas,4,1,'E',config);
+    // movimentacao(pecas,6,1,'E',config);
 
-    for (int i = 0; i < argc; i++){
-        if (i != 0){
-            while ((c = *argv[i])){
-                if (c == 'c'){
-                    contem_c = TRUE;
-                }
-                if (anterior == 'c' && c == '1'){
-                    configuracao = 1;
-                }
-                if (anterior == 'c' && c == '2'){
-                    configuracao = 2;
-                }
-                if (c == 'm'){
-                    contem_m = TRUE;
-                    local_m = i;
-                }
-                if ((local_m + 1) == i){
-                    posicao_x = c - '0';
-                }
-                if ((local_m + 2) == i){
-                    posicao_y = c - '0';
-                }
-                if (c == 'T' || c == 'B' || c == 'E' || c == 'D'){
-                    direcao = c;
-                }
-                ++argv[i];
-                anterior = c;
-            }
-        }
-    }
 
-    if (contem_c == FALSE){
-        configuracao = 1;
-    }
 
-    y = (configuracao == 1) ? 6: 8;
+    
 
-    int matrizA[x][y], *campo;
-
-    if (configuracao == 1){
-
-        matrizA[0][0] = '*', matrizA[0][1] = '*', matrizA[0][2] = '*', matrizA[0][3] = '*', matrizA[0][4] = '*', matrizA[0][5] = '*';
-        matrizA[1][0] = '*', matrizA[1][1] = 'a', matrizA[1][2] = 'D', matrizA[1][3] = 'D', matrizA[1][4] = 'b', matrizA[1][5] = '*';
-        matrizA[2][0] = '*', matrizA[2][1] = 'a', matrizA[2][2] = 'D', matrizA[2][3] = 'D', matrizA[2][4] = 'b', matrizA[2][5] = '*';
-        matrizA[3][0] = '*', matrizA[3][1] = 'c', matrizA[3][2] = 'd', matrizA[3][3] = 'd', matrizA[3][4] = 'e', matrizA[3][5] = '*';
-        matrizA[4][0] = '*', matrizA[4][1] = 'c', matrizA[4][2] = 'g', matrizA[4][3] = 'h', matrizA[4][4] = 'e', matrizA[4][5] = '*';
-        matrizA[5][0] = '*', matrizA[5][1] = 'f', matrizA[5][2] = ' ', matrizA[5][3] = ' ', matrizA[5][4] = 'i', matrizA[5][5] = '*';
-        matrizA[6][0] = '*', matrizA[6][1] = '*', matrizA[6][2] = '+', matrizA[6][3] = '+', matrizA[6][4] = '*', matrizA[6][5] = '*'; 
-    } else{
-        matrizA[0][0] = '*', matrizA[0][1] = '*', matrizA[0][2] = '*', matrizA[0][3] = '*', matrizA[0][4] = '*', matrizA[0][5] = '*',matrizA[0][6] = '*',matrizA[0][7] = '*';
-        matrizA[1][0] = '*', matrizA[1][1] = 'D', matrizA[1][2] = 'D', matrizA[1][3] = ' ', matrizA[1][4] = 'a', matrizA[1][5] = 'a',matrizA[1][6] = 'b',matrizA[1][7] = '*';
-        matrizA[2][0] = '*', matrizA[2][1] = 'D', matrizA[2][2] = 'D', matrizA[2][3] = ' ', matrizA[2][4] = 'a', matrizA[2][5] = 'c',matrizA[2][6] = 'd',matrizA[2][7] = '*';
-        matrizA[3][0] = '*', matrizA[3][1] = 'e', matrizA[3][2] = 'e', matrizA[3][3] = 'f', matrizA[3][4] = 'g', matrizA[3][5] = 'd',matrizA[3][6] = 'd',matrizA[3][7] = '*';
-        matrizA[4][0] = '*', matrizA[4][1] = 'h', matrizA[4][2] = 'h', matrizA[4][3] = 'i', matrizA[4][4] = 'j', matrizA[4][5] = 'k',matrizA[4][6] = 'l',matrizA[4][7] = '+';
-        matrizA[5][0] = '*', matrizA[5][1] = 'h', matrizA[5][2] = 'i', matrizA[5][3] = 'i', matrizA[5][4] = 'm', matrizA[5][5] = 'k',matrizA[5][6] = 'l',matrizA[5][7] = '+';
-        matrizA[6][0] = '*', matrizA[6][1] = '*', matrizA[6][2] = '*', matrizA[6][3] = '*', matrizA[6][4] = '*', matrizA[6][5] = '*',matrizA[6][6] = '*',matrizA[6][7] = '*';
-    }
-
-    campo = &matrizA[0][0];
-
-    printMatriz (campo,x,y);
-
-    if (contem_m == TRUE){
-        movimentacao(campo, posicao_x, posicao_y, direcao, x, y);
-    }
-
+    return 0;
 }
 
-//#################################################################################
+char *nome_txt(int argc, char *argv[]){
 
-void printMatriz (int *campo, int mx, int my){
-    printf("\n");
-    int i, j;
-    for (i = 0; i < mx; i++){
-        for (j = 0; j < my; j++){
-            printf("%c ",*(campo+j+(i*my)));
+    int c,count_letter, anterior, flag_name, contem_f;
+    flag_name = contem_f = FALSE;
+    count_letter = anterior = 0;
+    static char nome_arquivo_array[50];
+    if (argc == 3){
+        for (int i = 0; i < argc; i++){
+            if (i != 0){        //não pega o nome da execução do programa
+                while ((c = *argv[i])){
+                    if (c == 'f' && anterior == '-'){
+                        contem_f = TRUE;
+                    }
+                    if (anterior == 'f' && contem_f == TRUE){
+                        flag_name = TRUE;
+                    }
+                    if (flag_name == TRUE){
+                        nome_arquivo_array[count_letter++] = c;
+                    }
+                    ++argv[i];
+                    anterior = c;
+                }
+            }
         }
-        printf("\n");
+        nome_arquivo_array[count_letter] = '\0';
     }
-};
+    char *p;
+    if (contem_f == FALSE){
+        static char novo_nome[] = "haikori.txt";
+        p = novo_nome;
+    }else{
+        p = nome_arquivo_array;
+    }
+    return p;
+}
+
+int *leitura (char *nome_arquivo, int config){
+
+  FILE *pont_arq;
+  int count = 0, contador = 0, c;
+  int flag_wall = FALSE;
+  static int array[100];
+  
+      
+  pont_arq = fopen(nome_arquivo,"r");
+  
+  do
+  {  
+      c = fgetc(pont_arq);
+      if (config == 1){
+        if (c == '*') flag_wall = TRUE;
+        if (flag_wall == TRUE && count < 42 && c != '\n') array[count++] = c;
+      }
+      else{
+        if (c == '*' && contador >= 20) flag_wall = TRUE;
+        if (flag_wall == TRUE && count < 56 && c != '\n') array[count++] = c;
+      }
+      if (c =='*')contador++;
+  }while (c != EOF);
+  
+  fclose(pont_arq);//fechando o arquivo
+
+  array[count] = '\0';
+
+  int *p = array;
+
+  return p;
+}
+
+void comando_l (char *nome_arquivo){
+    int *config1;// = leitura (nome_arquivo, 1);
+    int *config2;// = leitura (nome_arquivo, 2);
+    printf("1\nFloco de Neve\n");
+    config1 = leitura (nome_arquivo, 1);
+    imprime(config1, 1);
+    printf("2\nEngarrafamanto\n");
+    config2 = leitura (nome_arquivo, 2);
+    imprime(config2, 2);
+}
+
+void imprime(int *config, int configuracao){
+    int coluna = 1;
+    int mx = (configuracao == 1) ? 6 : 8;
+    if (configuracao == 1) printf("  1234\n");
+    if (configuracao == 2) printf("  123456\n");
+    for (int i = 0;*(config+i) != '\0'; i++){
+        if (i == 0){
+            printf(" %c",*config);
+        }
+        else if ((i+1)%mx == 0){
+            if (coluna < 6){
+                printf("%c\n%d",*(config+i),coluna++);
+            } else{
+                printf("%c\n ",*(config+i));
+            }
+        }else printf("%c",*(config+i));
+    }
+    printf("\n");
+}
+
+void traducao_direcao(char direcao){
+    switch (direcao){
+    case 'B':
+        printf("baixo\n");
+        break;
+    case 'T':
+        printf("topo\n");
+        break;
+    case 'E':
+        printf("esquerda\n");
+        break;
+    case 'D':
+        printf("direita\n");
+        break;      
+    default:
+        printf("nenhum lugar\n");
+    }
+}
 
 int *quantpecas_localidade (int *campo, int peca, int mx, int my){
     int total = mx*my, i = 0, count = 0, *count_e_localidade;
@@ -121,11 +181,14 @@ int *quantpecas_localidade (int *campo, int peca, int mx, int my){
     return count_e_localidade;
 }
 
-int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int my){
+int verifica_movimentacao (int *campo, int x, int y, char direcao, int configuracao){
+    int mx = 7;
+    int my = (configuracao == 1) ? 6 : 8;
+
     if (x > mx || y > my){
         return FALSE;
     }
-    int local_peca = my*x + y;
+    int local_peca = my*y + x;
     int peca = *(campo+local_peca);
     int *count_e_localidade;
     count_e_localidade = quantpecas_localidade(campo, peca, mx, my); //(count,x,x,x,x)
@@ -194,33 +257,16 @@ int verifica_movimentacao (int *campo, int x, int y, char direcao, int mx, int m
 
 }
 
-void traducao_direcao(char direcao){
-    switch (direcao){
-    case 'B':
-        printf("baixo\n");
-        break;
-    case 'T':
-        printf("topo\n");
-        break;
-    case 'E':
-        printf("esquerda\n");
-        break;
-    case 'D':
-        printf("direita\n");
-        break;      
-    default:
-        printf("nenhum lugar\n");
-    }
-}
-
-void movimentacao (int *campo, int x, int y, char direcao, int mx, int my){
-    if (verifica_movimentacao(campo,x,y,direcao,mx,my) == 0){
+void movimentacao (int *campo, int x, int y, char direcao, int configuracao){
+    int mx = 7;
+    int my = (configuracao == 1) ? 6 : 8;
+    if (verifica_movimentacao(campo,x,y,direcao, configuracao) == 0){
 
         printf("\nImpossível movimentar peça em %d,%d para ", x,y);
         traducao_direcao(direcao);
     }
     else{
-        int local_peca = my*x + y;
+        int local_peca = my*y + x;
         int peca = *(campo+local_peca);
         int *count_e_localidade;
         count_e_localidade = quantpecas_localidade(campo, peca, mx, my); //(count,x,x,x,x)
@@ -265,6 +311,7 @@ void movimentacao (int *campo, int x, int y, char direcao, int mx, int my){
                 *(campo+( *(count_e_localidade+1+i))) = ' ';
             }    
         }
-        printMatriz (campo,mx,my);
+        imprime(campo, configuracao);
+        //printMatriz (campo,mx,my);
     }
 }

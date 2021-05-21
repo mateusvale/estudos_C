@@ -12,46 +12,20 @@ int main (int argc, char *argv[]){
     for (int i = 0; i < argc; i++){
         if (i != 0){
             while ((c = *argv[i])){
-                *++argv[i];
-                // if (c == 'c'){
-                //     contem_c = TRUE;
-                // }
-                // if (anterior == 'c' && c == 1){
-                //     configuracao = 1;
-                // }
-                // if (anterior == 'c' && c == 2) {
-                //     configuracao = 2;
-                // }
-                // if (c == 'm'){
-                //     local_m = i;
-                // }
-                // if ((local_m + 1) == i){
-                //     posicao_x = c;
-                // }
-                // if ((local_m + 2) == i){
-                //     posicao_y = c;
-                // }
-                // if (c == 'T' || c == 'B' || c == 'E' || c == 'D'){
-                //     direcao = c;
-                // }
-                // if (count == 5){
-                //     break;
-                // }
                 printf("%c\n",c);
-                anterior = c;
-                count++;
+                *++argv[i];
             }
         }
         
             // printf("#########\n");
     }
 
-    printf("c: %d\n",c);
+    // printf("c: %d\n",c);
     if (contem_c == FALSE){
         configuracao = 1;
     }
-    printf("configuracao: %d\n",configuracao);
-    printf("posicao_x: %d\n",posicao_x);
-    printf("posicao_y: %d\n",posicao_y);
-    printf("direcao: %c\n",direcao);
+    // printf("configuracao: %d\n",configuracao);
+    // printf("posicao_x: %d\n",posicao_x);
+    // printf("posicao_y: %d\n",posicao_y);
+    // printf("direcao: %c\n",direcao);
 }
