@@ -11,9 +11,15 @@ int main(void){
   char name[] = "teste.txt";  
   int config = 1;
 
+  // int elements = 100;
+
   int *pointer = configuracao (name, config);
 
-  for (int i = 0; *(pointer+i) != '\n'; i++) printf("%c",*(pointer+i));
+  // pointer = (int *) malloc(elements * sizeof(int));
+
+  // pointer 
+
+  for (int i = 0; *(pointer+i) != '\0'; i++) printf("%c",*(pointer+i));
 
   printf("\n");
 
@@ -52,11 +58,11 @@ int *configuracao (char nome_arquivo[], int config){
 
   int *p = array;
 
-  int i= 0;
-  for (; array[i] != '\0'; i++){
-      printf("%c",array[i]);
-  }
-  printf("\n");
+  // int i= 0;
+  // for (; array[i] != '\0'; i++){
+  //     printf("%c",array[i]);
+  // }
+  // printf("\n");
 
   return p;
 
