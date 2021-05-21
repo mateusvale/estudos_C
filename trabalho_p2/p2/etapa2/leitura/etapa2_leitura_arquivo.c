@@ -9,7 +9,7 @@ int *configuracao (char nome_arquivo[], int config);
 int main(void){
 
   char name[] = "teste.txt";  
-  int config = 1;
+  int config = 2;
 
   // int elements = 100;
 
@@ -46,8 +46,8 @@ int *configuracao (char nome_arquivo[], int config){
         if (flag_wall == TRUE && count < 42 && c != '\n') array[count++] = c;
       }
       else{
-        if (c == '*' && contador > 20) flag_wall = TRUE;
-        if (flag_wall == TRUE && count < 55 && c != '\n') array[count++] = c;
+        if (c == '*' && contador >= 20) flag_wall = TRUE;
+        if (flag_wall == TRUE && count < 56 && c != '\n') array[count++] = c;
       }
       if (c =='*')contador++;
   }while (c != EOF);
