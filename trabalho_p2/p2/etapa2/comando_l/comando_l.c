@@ -4,6 +4,8 @@
 #define TRUE 1
 #define FALSE 0
 
+void imprime(int *config, int configuracao);
+
 void comando_l (char *nome_arquivo);
 
 char *nome_txt(int argc, char *argv[]); //funcionando
@@ -24,7 +26,7 @@ int main (int argc, char *argv[]){
     // if ((i+2)/7 < 6)printf("opa\n");
 
     //######################coleta do local das pecas######################//
-    int config = 1;
+    int config = 2;
     int *pecas = leitura (nome_arquivo, config);
     for (int i = 0; *(pecas+i) != '\0'; i++) printf("%c",*(pecas+i));
     printf("\n");
@@ -90,8 +92,8 @@ int *leitura (char *nome_arquivo, int config){
         if (flag_wall == TRUE && count < 42 && c != '\n') array[count++] = c;
       }
       else{
-        if (c == '*' && contador > 20) flag_wall = TRUE;
-        if (flag_wall == TRUE && count < 55 && c != '\n') array[count++] = c;
+        if (c == '*' && contador >= 20) flag_wall = TRUE;
+        if (flag_wall == TRUE && count < 56 && c != '\n') array[count++] = c;
       }
       if (c =='*')contador++;
   }while (c != EOF);
@@ -106,25 +108,31 @@ int *leitura (char *nome_arquivo, int config){
 }
 
 void comando_l (char *nome_arquivo){
-    int *config1 = leitura (nome_arquivo, 1);
-    int *config2 = leitura (nome_arquivo, 2);
+    int *config1;// = leitura (nome_arquivo, 1);
+    int *config2;// = leitura (nome_arquivo, 2);
+    printf("1\nFloco de Neve\n  1234\n");
+    config1 = leitura (nome_arquivo, 1);
+    imprime(config1, 1);
+    printf("2\nEngarrafamanto\n  123456\n");
+    config2 = leitura (nome_arquivo, 2);
+    imprime(config2, 2);
+}
 
-    printf("1\n");
-    printf("Floco de Neve\n");
-    printf("  1234\n");
-
-    int i = 0;
-    for (;*(config1+i) != '\0'; i++){
+void imprime(int *config, int configuracao){
+    int coluna = 1;
+    int my = (configuracao == 1) ? 6 : 8;
+    for (int i = 0;*(config+i) != '\0'; i++){
         if (i == 0){
-            printf(" %c",*config1);
+            printf(" %c",*config);
         }
-        else if ((i+1)%6 == 0){
-            if ((i+2)/7 < 6){
-                printf("%c\n%d",*(config1+i),(i+2)/7);
+        else if ((i+1)%my == 0){
+            if (coluna < 6){
+                printf("%c\n%d",*(config+i),coluna++);
             } else{
-                printf("%c\n",*(config1+i));
+                printf("%c\n ",*(config+i));
             }
-        }else printf("%c",*(config1+i));
+        }else printf("%c",*(config+i));
     }
+    printf("\n");
 }
 
