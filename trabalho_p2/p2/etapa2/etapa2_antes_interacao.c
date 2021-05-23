@@ -4,13 +4,11 @@
 #define TRUE 1
 #define FALSE 0
 
-void remove_espacos (char string[]);
-
 int *quantpecas_localidade (int *campo, int peca, int mx, int my);
 
 int verifica_movimentacao (int *campo, int x, int y, char direcao, int configuracao);
 
-void imprime(int *peca, int configuracao); //funcionando
+void imprime(int *config, int configuracao); //funcionando
 
 void comando_l (char *nome_arquivo); //funcionando
 
@@ -24,134 +22,22 @@ void traducao_direcao(char direcao);
 
 int main (int argc, char *argv[]){
 
+    //###################################
+    //vai pegar o nome do arquivo que será passado por parametro na hora de executar
     char *nome_arquivo;
     nome_arquivo = nome_txt(argc,argv);
-    int *pecas;
-    //comando_l(nome_arquivo);
-
-    int c, config;
-
-    int primeira_escolha = FALSE;
-    int proxima_escolha = FALSE;
-    // int mudanca_configuracao_igual = FALSE;
     
-    int movimento = 0;
-    char comandos[50];
-    int countador_comandos = 0;
-    while (TRUE == 1){
-
-        while ((c = getchar()) != '\n'){
-            comandos[countador_comandos++] = c;
-        }
-        comandos[countador_comandos] = '\0';
-        countador_comandos = 0;
-        // printf("%c\n",comandos[count]);
-        
-        // comandos[]
-        if (proxima_escolha == TRUE){ //quando fizer a segunda escolha em diante da configuracao - nao finalizado
-            if (comandos[0] == '1'){
-                config = (config + 1 == 3) ? 1 : 2;
-                pecas = leitura (nome_arquivo, config);
-                printf("\n");
-                imprime(pecas,config);
-                movimento = 0;
-                // printf("\nConfiguração utilizada: %d\n", comandos[1]);
-                //zerar os ponteiros que movimentaram
-            }
-            else{
-                printf("\nConfiguração permanecida\n\n");
-            }
-            proxima_escolha = FALSE;
-        }
-
-        else if (comandos[0] == 'l' &&  comandos[1] == '\0'){ //comando_l -> feito
-            //lista()
-            printf("\n");
-            remove_espacos(comandos);
-            //printf("Listagem de opções\n");
-            comando_l(nome_arquivo);
-
-            continue;
-        }
-
-        else if (comandos[0] == 'c' && primeira_escolha == FALSE){ //primeiro comandos -> feito
-            primeira_escolha = TRUE;
-            remove_espacos(comandos);
-            config = comandos[1] - '0';
-            pecas = leitura (nome_arquivo, config);
-            imprime(pecas,config);
-        }
-
-        else if (comandos[0] == 'c' && primeira_escolha == TRUE){ //mudanca de configuracao - pergunta ->feito
-            remove_espacos(comandos);
-            // printf("config: %d\ncomando[1]: %d\n",config,comandos[1]);
-            if (config == (comandos[1] - '0')){
-                printf("Configuração permanecida\n\n");
-            }
-            else{
-                printf("Quer realmente fazer isso? Digite 1 para sim ou 0 para não: ");
-                // mudanca_configuracao_igual = (config == comandos[1])?
-                proxima_escolha = TRUE;
-            }
-        }
-
-        else if ((comandos[0] == 'm' || comandos[0] == 'p') && primeira_escolha == FALSE){//feito
-            printf("Escolha primeiro a configuração desejada\n\n");
-            continue;
-        }
-
-        else if (comandos[0] == 'm' && primeira_escolha == TRUE){
-            remove_espacos(comandos);
-            if (verifica_movimentacao(pecas, comandos[1] - '0', comandos[2] - '0', comandos[3], config) == TRUE){
-                movimento++;
-                printf("Movimento %d\n", movimento);
-            }
-            movimentacao (pecas, comandos[1] - '0', comandos[2] - '0', comandos[3], config);
-            //printf("x = %d\ny = %d\nDireção: %c\n", comandos[1], comandos[2],comandos[3]);
-            continue;
-        }
-
-        else if (comandos[0] == 'p' && primeira_escolha == TRUE){
-            remove_espacos(comandos);
-            //imprime
-            printf("imprime os movimentos");
-            continue;
-        }
-        else {
-            printf("Opção inválida!\nAs opções possíveis são:\n\t- l\n\t- c <n>\n\t- m <linha> <coluna> <direção>\n\t- p\n\n");
-        }
-        
-    }
-
-
-
-
-
-
-
+    //###################################
+    //peca recebe o array
+    // int config = 1;
+    // int *pecas = leitura (nome_arquivo, config);
+    
+    // comando_l(nome_arquivo);
+    
+    // movimentacao(pecas,4,1,'E',config);
+    // movimentacao(pecas,6,1,'E',config);
 
     return 0;
-}
-
-void remove_espacos (char string[]){
-    int i = 0, j = 0;
-    char aux[100];
-    while (string[i] != '\0'){
-        if (string[i] != ' ' && string[i] != '\t'){
-            aux[j++] = string[i]; 
-        }
-        i++;
-    }
-    aux[j] = '\0';
-    // for (int w = 0; aux[w] != '\0'; i++){
-    //     string[w] = aux[w];
-    // }
-    j = 0;
-    while(aux[j] != '\0'){
-        string[j] = aux[j];
-        j++;
-    }
-    string[j] = '\0';
 }
 
 char *nome_txt(int argc, char *argv[]){
@@ -234,22 +120,22 @@ void comando_l (char *nome_arquivo){
     imprime(config2, 2);
 }
 
-void imprime(int *peca, int configuracao){
+void imprime(int *config, int configuracao){
     int coluna = 1;
     int mx = (configuracao == 1) ? 6 : 8;
     if (configuracao == 1) printf("  1234\n");
     if (configuracao == 2) printf("  123456\n");
-    for (int i = 0;*(peca+i) != '\0'; i++){
+    for (int i = 0;*(config+i) != '\0'; i++){
         if (i == 0){
-            printf(" %c",*peca);
+            printf(" %c",*config);
         }
         else if ((i+1)%mx == 0){
             if (coluna < 6){
-                printf("%c\n%d",*(peca+i),coluna++);
+                printf("%c\n%d",*(config+i),coluna++);
             } else{
-                printf("%c\n ",*(peca+i));
+                printf("%c\n ",*(config+i));
             }
-        }else printf("%c",*(peca+i));
+        }else printf("%c",*(config+i));
     }
     printf("\n");
 }
@@ -374,7 +260,6 @@ void movimentacao (int *campo, int x, int y, char direcao, int configuracao){
 
         printf("\nImpossível movimentar peça em %d,%d para ", x,y);
         traducao_direcao(direcao);
-        printf("\n");
     }
     else{
         int local_peca = my*y + x;
@@ -426,4 +311,3 @@ void movimentacao (int *campo, int x, int y, char direcao, int configuracao){
         //printMatriz (campo,mx,my);
     }
 }
-

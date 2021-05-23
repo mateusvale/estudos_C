@@ -18,7 +18,6 @@ int main(){
     char comando_c[1000];
     int count = 0;
     
-    
 
     while (TRUE == 1){
 
