@@ -4,6 +4,8 @@
 #define TRUE 1
 #define FALSE 0
 
+void guarda_movimentos(int **movimentos, int movimento, char comandos[]);
+
 void remove_espacos (char string[]);
 
 int *quantpecas_localidade (int *campo, int peca, int mx, int my);
@@ -27,17 +29,20 @@ int main (int argc, char *argv[]){
     char *nome_arquivo;
     nome_arquivo = nome_txt(argc,argv);
     int *pecas;
-    //comando_l(nome_arquivo);
-
+    //int *pecas_original;
+    int **movimentos = (int **) (malloc(3*sizeof(int *))); //nao uso movimentos[0]
+    for (int i = 0; i < 3; i++ ){
+        movimentos[i] = (int *) malloc(3 * sizeof(int));
+    }
     int c, config;
 
     int primeira_escolha = FALSE;
     int proxima_escolha = FALSE;
-    // int mudanca_configuracao_igual = FALSE;
     
     int movimento = 0;
     char comandos[50];
     int countador_comandos = 0;
+
     while (TRUE == 1){
 
         while ((c = getchar()) != '\n'){
@@ -48,10 +53,11 @@ int main (int argc, char *argv[]){
         // printf("%c\n",comandos[count]);
         
         // comandos[]
-        if (proxima_escolha == TRUE){ //quando fizer a segunda escolha em diante da configuracao - nao finalizado
+        if (proxima_escolha == TRUE){ //finalizado
             if (comandos[0] == '1'){
                 config = (config + 1 == 3) ? 1 : 2;
                 pecas = leitura (nome_arquivo, config);
+                // *pecas_original = *pecas;
                 printf("\n");
                 imprime(pecas,config);
                 movimento = 0;
@@ -79,6 +85,7 @@ int main (int argc, char *argv[]){
             remove_espacos(comandos);
             config = comandos[1] - '0';
             pecas = leitura (nome_arquivo, config);
+            // *pecas_original = *pecas;
             imprime(pecas,config);
         }
 
@@ -100,12 +107,14 @@ int main (int argc, char *argv[]){
             continue;
         }
 
-        else if (comandos[0] == 'm' && primeira_escolha == TRUE){
+        else if (comandos[0] == 'm' && primeira_escolha == TRUE){//comando_m -> feito
             remove_espacos(comandos);
             if (verifica_movimentacao(pecas, comandos[1] - '0', comandos[2] - '0', comandos[3], config) == TRUE){
                 movimento++;
                 printf("Movimento %d\n", movimento);
+                guarda_movimentos(movimentos, movimento, comandos);
             }
+
             movimentacao (pecas, comandos[1] - '0', comandos[2] - '0', comandos[3], config);
             //printf("x = %d\ny = %d\nDireção: %c\n", comandos[1], comandos[2],comandos[3]);
             continue;
@@ -113,8 +122,12 @@ int main (int argc, char *argv[]){
 
         else if (comandos[0] == 'p' && primeira_escolha == TRUE){
             remove_espacos(comandos);
-            //imprime
-            printf("imprime os movimentos");
+            // imprime(pecas_original,config);
+            for (int i = 1; i <= movimento;i++){
+                printf("\n");
+                // movimentacao(pecas_original,movimentos[movimento][0],movimentos[movimento][1],movimentos[movimento][2],config)
+            }            
+            printf("\n");
             continue;
         }
         else {
@@ -122,13 +135,6 @@ int main (int argc, char *argv[]){
         }
         
     }
-
-
-
-
-
-
-
 
     return 0;
 }
@@ -427,3 +433,27 @@ void movimentacao (int *campo, int x, int y, char direcao, int configuracao){
     }
 }
 
+void guarda_movimentos(int **movimentos, int movimento, char comandos[]){
+
+    // if (movimento % 2 == 0){
+    //         movimentos = (int **)realloc(movimentos,movimento*2*sizeof(int *));
+    //         for (int j = movimento; j<=(movimento*2);j++){
+    //             movimentos[j] = (int *) malloc(3 * sizeof(int));
+    //         }
+    // }
+
+    if (movimento >= 3){
+        movimentos = (int **)realloc(movimentos,++movimento*sizeof(int *));
+        movimentos[--movimento] = (int *) malloc(3 * sizeof(int));
+    }
+    for (int i = 0; i < 3; i++){
+        
+        if (i != 2){
+            movimentos[movimento][i] = comandos[i] - '0';
+        }
+        else{
+            movimentos[movimento][i] = comandos[i];
+        }
+        
+    }
+}
