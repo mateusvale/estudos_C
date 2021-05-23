@@ -122,10 +122,12 @@ int main (int argc, char *argv[]){
 
         else if (comandos[0] == 'p' && primeira_escolha == TRUE){
             remove_espacos(comandos);
-            // imprime(pecas_original,config);
+            pecas = leitura (nome_arquivo, config);
+            imprime(pecas,config);
             for (int i = 1; i <= movimento;i++){
                 printf("\n");
-                // movimentacao(pecas_original,movimentos[movimento][0],movimentos[movimento][1],movimentos[movimento][2],config)
+                // printf("movimentos[1][0]: %d\nmovimentos[1][1]: %d\nmovimentos[1][2]: %c\n", movimentos[i][1],movimentos[i][2],movimentos[i][3]);
+                movimentacao(pecas,movimentos[i][1],movimentos[i][2],movimentos[i][3],config);
             }            
             printf("\n");
             continue;
@@ -445,14 +447,18 @@ void guarda_movimentos(int **movimentos, int movimento, char comandos[]){
     if (movimento >= 3){
         movimentos = (int **)realloc(movimentos,++movimento*sizeof(int *));
         movimentos[--movimento] = (int *) malloc(3 * sizeof(int));
+        // printf("passou!");
+        // printf("sizeof(movimentos): %ld\n",sizeof(movimentos));
     }
-    for (int i = 0; i < 3; i++){
-        
-        if (i != 2){
+    for (int i = 1; i <= 3; i++){
+        // printf("comando = %c\n",comandos[i]);
+        if (i != 3){
             movimentos[movimento][i] = comandos[i] - '0';
+            // printf("movimento = %d\n",movimentos[movimento][i]);
         }
         else{
             movimentos[movimento][i] = comandos[i];
+            // printf("movimento = %c\n",movimentos[movimento][i]);
         }
         
     }
