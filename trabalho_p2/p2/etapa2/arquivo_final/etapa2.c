@@ -29,10 +29,10 @@ int main (int argc, char *argv[]){
     
     //###################################
     //peca recebe o array
-    // int config = 1;
-    // int *pecas = leitura (nome_arquivo, config);
+    int config = 2;
+    int *pecas = leitura (nome_arquivo, config);
     
-    comando_l(nome_arquivo);
+    // comando_l(nome_arquivo);
     
     // movimentacao(pecas,4,1,'E',config);
     // movimentacao(pecas,6,1,'E',config);

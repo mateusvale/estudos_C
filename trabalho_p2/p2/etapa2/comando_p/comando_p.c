@@ -32,7 +32,7 @@ int main (int argc, char *argv[]){
     // int config = 1;
     // int *pecas = leitura (nome_arquivo, config);
     
-    comando_l(nome_arquivo);
+    // comando_l(nome_arquivo);
     
     // movimentacao(pecas,4,1,'E',config);
     // movimentacao(pecas,6,1,'E',config);
