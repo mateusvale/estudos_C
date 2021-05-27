@@ -1,0 +1,10 @@
+interatividade_etapa3.c: In function ‘main’:
+interatividade_etapa3.c:51:9: warning: unused variable ‘movimento’ [-Wunused-variable]
+   51 |     int movimento = 0;
+      |         ^~~~~~~~~
+interatividade_etapa3.c:48:9: warning: variable ‘proxima_escolha’ set but not used [-Wunused-but-set-variable]
+   48 |     int proxima_escolha = FALSE;
+      |         ^~~~~~~~~~~~~~~
+interatividade_etapa3.c:36:9: warning: variable ‘escolha_movimentacao’ set but not used [-Wunused-but-set-variable]
+   36 |     int escolha_movimentacao = 0;
+      |         ^~~~~~~~~~~~~~~~~~~~

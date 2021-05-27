@@ -4,17 +4,21 @@
 #define TRUE 1
 #define FALSE 0
 
+void guarda_movimentos(int **movimentos, int movimento, char comandos[]);
+
+void remove_espacos (char string[]);
+
 int *quantpecas_localidade (int *campo, int peca, int mx, int my);
 
 int verifica_movimentacao (int *campo, int x, int y, char direcao, int configuracao);
 
-void imprime(int *config, int configuracao); //funcionando
+void imprime(int *peca, int configuracao);
 
-void comando_l (char *nome_arquivo); //funcionando
+void comando_l (char *nome_arquivo);
 
-char *nome_txt(int argc, char *argv[]); //funcionando
+char *nome_txt(int argc, char *argv[]);
 
-int *leitura (char *nome_arquivo, int config); //funcionando
+int *leitura (char *nome_arquivo, int config);
 
 void movimentacao (int *campo, int x, int y, char direcao, int configuracao);
 
@@ -22,22 +26,125 @@ void traducao_direcao(char direcao);
 
 int main (int argc, char *argv[]){
 
-    //###################################
-    //vai pegar o nome do arquivo que será passado por parametro na hora de executar
     char *nome_arquivo;
     nome_arquivo = nome_txt(argc,argv);
-    
-    //###################################
-    //peca recebe o array
-    int config = 2;
-    int *pecas = leitura (nome_arquivo, config);
-    
-    // comando_l(nome_arquivo);
-    
-    // movimentacao(pecas,4,1,'E',config);
-    // movimentacao(pecas,6,1,'E',config);
+    int *pecas;
+    int **movimentos = (int **) (malloc(10*sizeof(int *))); //nao uso movimentos[0]
+    for (int i = 0; i < 10; i++ ){
+        movimentos[i] = (int *) malloc(3 * sizeof(int));
+    }
+    int c, config;
 
+    int primeira_escolha = FALSE;
+    int proxima_escolha = FALSE;
+    
+    int movimento = 0;
+    char comandos[50];
+    int countador_comandos = 0;
+
+    while (TRUE == 1){
+
+        while ((c = getchar()) != '\n'){
+            comandos[countador_comandos++] = c;
+        }
+        comandos[countador_comandos] = '\0';
+        countador_comandos = 0;
+        
+        if (proxima_escolha == TRUE){
+            if (comandos[0] == '1'){
+                config = (config + 1 == 3) ? 1 : 2;
+                pecas = leitura (nome_arquivo, config);
+                printf("\n");
+                imprime(pecas,config);
+                movimento = 0;
+            }
+            else{
+                printf("\nConfiguração permanecida\n\n");
+            }
+            proxima_escolha = FALSE;
+        }
+
+        else if (comandos[0] == 'l' &&  comandos[1] == '\0'){
+            printf("\n");
+            comando_l(nome_arquivo);
+            continue;
+        }
+
+        else if (comandos[0] == 'c' && primeira_escolha == FALSE){
+            primeira_escolha = TRUE;
+            remove_espacos(comandos);
+            config = comandos[1] - '0';
+            pecas = leitura (nome_arquivo, config);
+            imprime(pecas,config);
+        }
+
+        else if (comandos[0] == 'c' && primeira_escolha == TRUE){
+            remove_espacos(comandos);
+            if (config == (comandos[1] - '0')){
+                printf("Configuração permanecida\n\n");
+            }
+            else{
+                printf("Quer realmente fazer isso? Digite 1 para sim ou 0 para não: ");
+                proxima_escolha = TRUE;
+            }
+        }
+
+        else if ((comandos[0] == 'm' || comandos[0] == 'p') && primeira_escolha == FALSE){
+            printf("Escolha primeiro a configuração desejada\n\n");
+            continue;
+        }
+
+        else if (comandos[0] == 'm' && primeira_escolha == TRUE){
+            remove_espacos(comandos);
+            if (verifica_movimentacao(pecas, comandos[1] - '0', comandos[2] - '0', comandos[3], config) == TRUE){
+                movimento++;
+                printf("Movimento %d\n", movimento);
+                if (movimento >= 10){
+                    movimentos = (int **)realloc(movimentos,++movimento*sizeof(int *));
+                    movimentos[--movimento] = (int *) malloc(3 * sizeof(int));
+                }
+                guarda_movimentos(movimentos, movimento, comandos);
+            }
+
+            movimentacao (pecas, comandos[1] - '0', comandos[2] - '0', comandos[3], config);
+            continue;
+        }
+
+        else if (comandos[0] == 'p' && comandos[1] == '\0'&& primeira_escolha == TRUE){
+            remove_espacos(comandos);
+            pecas = leitura (nome_arquivo, config);
+            imprime(pecas,config);
+            for (int i = 1; i <= movimento;i++){
+                printf("\n");
+                movimentacao(pecas,movimentos[i][1],movimentos[i][2],movimentos[i][3],config);
+            }            
+            printf("\n");
+            continue;
+        }
+
+        else {
+            printf("Opção inválida!\nAs opções possíveis são:\n\t- l\n\t- c <n>\n\t- m <linha> <coluna> <direção>\n\t- p\n\n");
+        }
+    }
     return 0;
+}
+
+void remove_espacos (char string[]){
+    int i = 0, j = 0;
+    char aux[100];
+    while (string[i] != '\0'){
+        if (string[i] != ' ' && string[i] != '\t'){
+            aux[j++] = string[i]; 
+        }
+        i++;
+    }
+    aux[j] = '\0';
+    j = 0;
+    while(aux[j] != '\0'){
+        string[j] = aux[j];
+        j++;
+    }
+    string[j] = '\0';
 }
 
 char *nome_txt(int argc, char *argv[]){
@@ -48,7 +155,7 @@ char *nome_txt(int argc, char *argv[]){
     static char nome_arquivo_array[50];
     if (argc == 3){
         for (int i = 0; i < argc; i++){
-            if (i != 0){        //não pega o nome da execução do programa
+            if (i != 0){    
                 while ((c = *argv[i])){
                     if (c == 'f' && anterior == '-'){
                         contem_f = TRUE;
@@ -100,7 +207,7 @@ int *leitura (char *nome_arquivo, int config){
       if (c =='*')contador++;
   }while (c != EOF);
   
-  fclose(pont_arq);//fechando o arquivo
+  fclose(pont_arq);
 
   array[count] = '\0';
 
@@ -110,32 +217,32 @@ int *leitura (char *nome_arquivo, int config){
 }
 
 void comando_l (char *nome_arquivo){
-    int *config1;// = leitura (nome_arquivo, 1);
-    int *config2;// = leitura (nome_arquivo, 2);
-    printf("1\nFloco de Neve\n");
+    int *config1;
+    int *config2;
     config1 = leitura (nome_arquivo, 1);
+    printf("1\nFloco de Neve\n");
     imprime(config1, 1);
-    printf("2\nEngarrafamanto\n");
     config2 = leitura (nome_arquivo, 2);
+    printf("2\nEngarrafamento\n");
     imprime(config2, 2);
 }
 
-void imprime(int *config, int configuracao){
+void imprime(int *peca, int configuracao){
     int coluna = 1;
     int mx = (configuracao == 1) ? 6 : 8;
     if (configuracao == 1) printf("  1234\n");
     if (configuracao == 2) printf("  123456\n");
-    for (int i = 0;*(config+i) != '\0'; i++){
+    for (int i = 0;*(peca+i) != '\0'; i++){
         if (i == 0){
-            printf(" %c",*config);
+            printf(" %c",*peca);
         }
         else if ((i+1)%mx == 0){
             if (coluna < 6){
-                printf("%c\n%d",*(config+i),coluna++);
+                printf("%c\n%d",*(peca+i),coluna++);
             } else{
-                printf("%c\n ",*(config+i));
+                printf("%c\n ",*(peca+i));
             }
-        }else printf("%c",*(config+i));
+        }else printf("%c",*(peca+i));
     }
     printf("\n");
 }
@@ -161,7 +268,7 @@ void traducao_direcao(char direcao){
 
 int *quantpecas_localidade (int *campo, int peca, int mx, int my){
     int total = mx*my, i = 0, count = 0, *count_e_localidade;
-    static int arr1[30]; //numero alto para ser maior do que a quantidade de '*'
+    static int arr1[30];
     for (;i <= total; i++){
         if (*(campo+i) == peca){
             arr1[count++] = i;
@@ -260,6 +367,7 @@ void movimentacao (int *campo, int x, int y, char direcao, int configuracao){
 
         printf("\nImpossível movimentar peça em %d,%d para ", x,y);
         traducao_direcao(direcao);
+        printf("\n");
     }
     else{
         int local_peca = my*y + x;
@@ -308,6 +416,17 @@ void movimentacao (int *campo, int x, int y, char direcao, int configuracao){
             }    
         }
         imprime(campo, configuracao);
-        //printMatriz (campo,mx,my);
+    }
+}
+
+void guarda_movimentos(int **movimentos, int movimento, char comandos[]){
+
+    for (int i = 1; i <= 3; i++){
+        if (i != 3){
+            movimentos[movimento][i] = comandos[i] - '0';
+        }
+        else{
+            movimentos[movimento][i] = comandos[i];
+        }
     }
 }
